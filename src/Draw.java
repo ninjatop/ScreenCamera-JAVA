@@ -63,10 +63,13 @@ public class Draw {
 		g.setColor(new Color(rgb));
 		g.fillRect(x*blockSize, y*blockSize, width*blockSize, height*blockSize);
 	}
-	public void save(String filePath,String imgFormat){
+	public void save(String filePath,String fileName,String imgFormat){
 		g.dispose();
         img.flush();
         File file=new File(filePath);
+        if(file.exists()==false)
+        	file.mkdirs();
+        file = new File(filePath+fileName);
         try {
 			ImageIO.write(img,imgFormat,file);
 		} catch (IOException e) {

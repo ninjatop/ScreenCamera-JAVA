@@ -78,10 +78,10 @@ public class GenerateImage {
 			Draw img = new Draw(imageWidthLenght,imageHeightLenght,blockSize);
 			addWhiteBorder(img);
 			addBlackBorder(img);
-			addColorBorder(img);
-			addContent(img);
+			addColorBorder(img,i);
+			addContent(img,i);
 			DecimalFormat df=new DecimalFormat("000000");
-			img.save("img/"+df.format(i)+".png", "png");
+			img.save("img2/",df.format(i)+".png", "png");
 		}
 	}
 	public static void main(String []args){
@@ -97,7 +97,7 @@ public class GenerateImage {
 	 * @throws IOException 
 	 * 
 	 */
-	public void addContent(Draw img) {
+	public void addContent(Draw img, int frameIndex) {
 		int contentLeftOffset = WhiteBorderLength+BlackBorderLenght+mixBorderLength;
 		int contentTopOffset = WhiteBorderLength+BlackBorderLenght+mixBorderLength;
 		int contentRightOffset = contentLeftOffset + contentLength;
@@ -105,15 +105,19 @@ public class GenerateImage {
 		Random random = new Random();		
 		StringBuffer str = new StringBuffer();
 		for(int y = contentTopOffset; y < contentBottomOffset; y++){
+			int index = random.nextInt(this.colorTypeNum);
 			for(int x = contentLeftOffset; x < contentRightOffset; x++){
-				int index = random.nextInt(this.colorTypeNum);
+				
 				str.append(index+",");
 				img.fillBlock(x, y, 1, 1,this.rgbValue[index]);
 			}
 			str.append("\n");
 		}
 		try {
-			FileWriter writer = new FileWriter(new File("colorSequence.txt"));
+			File file = new File("colorsequence2/");
+			if(!file.exists())
+				file.mkdir();
+			FileWriter writer = new FileWriter( new File("colorsequence2/"+frameIndex+".txt"),true);
 			writer.write(str.toString());
 			writer.close();
 		} catch (IOException e) {
@@ -134,7 +138,7 @@ public class GenerateImage {
 	 * 
 	 * 
 	 */
-	public void addColorBorder(Draw img){
+	public void addColorBorder(Draw img, int frameIndex){
 		int leftOffset = WhiteBorderLength+BlackBorderLenght;
 		int topOffset = WhiteBorderLength+BlackBorderLenght;
 		int rightOffset = leftOffset + contentLength + 2* mixBorderLength;
@@ -156,11 +160,24 @@ public class GenerateImage {
 			index++;			
 		}
 		index=0;
+		
+		String temp = Integer.toBinaryString(frameIndex);		
 		for(int x=leftOffset+1;x<rightOffset;x++){//上面一行
 			if(index % 2 ==0)
 				img.fillWhiteBlock(x, topOffset, 1, 1);
 			else
 				img.fillBlackBlock(x, topOffset, 1, 1);
+			index++;
+		}
+		for(int x=leftOffset+1;x<leftOffset+10;x++){//上面一行			
+				img.fillWhiteBlock(x, topOffset, 1, 1);			
+		}
+		index=0;
+		for(int x=leftOffset+1;x<leftOffset+1+temp.length();x++){
+			if(temp.charAt(index)=='0')
+				img.fillBlackBlock(x, topOffset, 1, 1);
+			else
+				img.fillWhiteBlock(x, topOffset, 1, 1);
 			index++;
 		}
 		index=0;
