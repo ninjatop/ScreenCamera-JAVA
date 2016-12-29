@@ -16,7 +16,7 @@ import org.w3c.dom.css.CSSCharsetRule;
 * @createtime Oct 9, 2016 3:42:30 PM
 */
 public class GenerateImage {
-	protected int WhiteBorderLength = 8;//最外面白色边界
+	protected int WhiteBorderLength = 20;//最外面白色边界
 	protected int BlackBorderLenght = 1;//第二层黑色边界
 	protected int mixBorderLength = 1;//调色板的边界
 	protected int contentWidth = 180;//内容长度
@@ -38,15 +38,15 @@ public class GenerateImage {
 	
 	public void initRgbValue(){
 		this.rgbValue = new int[this.deltaNum * 2 + 1];
-		this.rgbValue[0] = geneRGB(120,120,0);	
-		this.rgbValue[1] = geneRGB(60, 120, 0);
-		this.rgbValue[2] = geneRGB(90, 120, 0);
-		this.rgbValue[3] = geneRGB(150, 120, 0);
-		this.rgbValue[4] = geneRGB(180, 120, 0);
-		this.rgbValue[5] = geneRGB(120, 60, 0);
-		this.rgbValue[6] = geneRGB(120, 90, 0);
-		this.rgbValue[7] = geneRGB(120, 150, 0);
-		this.rgbValue[8] = geneRGB(120, 180, 0);
+		this.rgbValue[0] = geneRGB(130,130,0);	
+		this.rgbValue[1] = geneRGB(50, 130, 0);
+		this.rgbValue[2] = geneRGB(100, 130, 0);
+		this.rgbValue[3] = geneRGB(160, 130, 0);
+		this.rgbValue[4] = geneRGB(210, 130, 0);
+		this.rgbValue[5] = geneRGB(130, 50, 0);
+		this.rgbValue[6] = geneRGB(130, 100, 0);
+		this.rgbValue[7] = geneRGB(130, 160, 0);
+		this.rgbValue[8] = geneRGB(130, 210, 0);
 		
 	}
 
