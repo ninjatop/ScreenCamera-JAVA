@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 * @create_time Oct 9, 2016 2:04:42 PM
 */
 public class Draw {
-	private int blockSize;//小方块的边长
-	private int imageWidth;//图片宽小方块个数
-	private int imageHeight;//图片长小方块个数
+	private int blockSize;//灏忔柟鍧楃殑杈归暱
+	private int imageWidth;//鍥剧墖瀹藉皬鏂瑰潡涓暟
+	private int imageHeight;//鍥剧墖闀垮皬鏂瑰潡涓暟
 	private Graphics2D g;
 	private BufferedImage img;
 	public Draw(){

@@ -16,14 +16,14 @@ import org.w3c.dom.css.CSSCharsetRule;
 * @createtime Oct 9, 2016 3:42:30 PM
 */
 public class GenerateImage {
-	protected int WhiteBorderLength = 20;//×îÍâÃæ°×É«±ß½ç
-	protected int BlackBorderLenght = 1;//µÚ¶ş²ãºÚÉ«±ß½ç
-	protected int mixBorderLength = 1;//µ÷É«°åµÄ±ß½ç
-	protected int contentWidth = 180;//ÄÚÈİ³¤¶È
-	protected int contentHeight = 100;//ÄÚÈİ¸ß¶È
-	protected int blockSize = 8;//Ğ¡·½¿é´óĞ¡
-	protected int colorTypeNum = 9;//ÑÕÉ«µÄ¿éÊı
-	protected int deltaNum = 4;//±ä»¯µÄÊıÄ¿
+	protected int WhiteBorderLength = 20;//æœ€å¤–é¢ç™½è‰²è¾¹ç•Œ
+	protected int BlackBorderLenght = 1;//ç¬¬äºŒå±‚é»‘è‰²è¾¹ç•Œ
+	protected int mixBorderLength = 1;//è°ƒè‰²æ¿çš„è¾¹ç•Œ
+	protected int contentWidth = 180;//å†…å®¹é•¿åº¦
+	protected int contentHeight = 100;//å†…å®¹é«˜åº¦
+	protected int blockSize = 8;//å°æ–¹å—å¤§å°
+	protected int colorTypeNum = 9;//é¢œè‰²çš„å—æ•°
+	protected int deltaNum = 4;//å˜åŒ–çš„æ•°ç›®
 	protected int []rgbValue ;
 	
 	protected int balck;
@@ -33,7 +33,7 @@ public class GenerateImage {
 		initRgbValue();		
 	}
 	/**
-	 * ³õÊ¼»¯Ã¿¸öÑÕÉ«Öµ
+	 * åˆå§‹åŒ–æ¯ä¸ªé¢œè‰²å€¼
 	 */
 	
 	public void initRgbValue(){
@@ -65,7 +65,7 @@ public class GenerateImage {
 		String c1 =df.format(Integer.parseInt(Integer.toBinaryString(b)));		
 		return Integer.valueOf(a1+b1+c1, 2);
 	}
-	public void toImg(){//50ÕÅÍ¼Æ¬
+	public void toImg(){//50å¼ å›¾ç‰‡
 		File file = new File("img8/");
 		if(!file.exists())
 			file.mkdir();
@@ -88,9 +88,9 @@ public class GenerateImage {
 		
 	}
 	/**
-	 * ½«ÄÚÈİ¼Óµ½¶şÎ¬ÂëÖĞ
+	 * å°†å†…å®¹åŠ åˆ°äºŒç»´ç ä¸­
 	 * 
-	 * @param img	¶şÎ¬Âë
+	 * @param img	äºŒç»´ç 
 	 * @throws IOException 
 	 * 
 	 */
@@ -101,7 +101,7 @@ public class GenerateImage {
 		int contentBottomOffset = contentTopOffset + contentHeight;
 		Random random = new Random();
 		switch(frameIndex%2){
-			case 0:{//Å¼ÊıÒ³£¬¶ÔRÍ¨µÀĞŞ¸Ä
+			case 0:{//å¶æ•°é¡µï¼Œå¯¹Ré€šé“ä¿®æ”¹
 				StringBuffer str = new StringBuffer();
 				for(int x = contentLeftOffset; x < contentBottomOffset; x = x + this.deltaNum + 1){	
 					for(int y = contentTopOffset; y < contentRightOffset; y = y + this.deltaNum + 1){
@@ -167,17 +167,17 @@ public class GenerateImage {
 			
 		}
 		
-		/*for(int x =contentLeftOffset;x<contentRightOffset;x++)//Ò»ĞĞºìÉ«
+		/*for(int x =contentLeftOffset;x<contentRightOffset;x++)//ä¸€è¡Œçº¢è‰²
 			img.fillRedBlock(x, contentTopOffset, 1, 1);
-		for(int x =contentLeftOffset;x<contentRightOffset;x++)//Ò»ĞĞÂÌÉ«
+		for(int x =contentLeftOffset;x<contentRightOffset;x++)//ä¸€è¡Œç»¿è‰²
 			img.fillGreenBlock(x, contentTopOffset+2, 1, 1);
-		for(int x =contentLeftOffset;x<contentRightOffset;x++)//Ò»ĞĞÀ¶É«
+		for(int x =contentLeftOffset;x<contentRightOffset;x++)//ä¸€è¡Œè“è‰²
 			img.fillBlueBlock(x, contentTopOffset+4, 1, 1);	*/	
 	}
 	
 	
 	/**
-	 * ½«µ÷É«±ß¿ò¼Óµ½¶şÎ¬ÂëÖĞ
+	 * å°†è°ƒè‰²è¾¹æ¡†åŠ åˆ°äºŒç»´ç ä¸­
 	 * 
 	 * 
 	 */
@@ -187,7 +187,7 @@ public class GenerateImage {
 		int rightOffset = leftOffset + contentWidth + 2* mixBorderLength;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength;
 		int index=0;
-		for(int y=topOffset;y<bottomOffset;y++){//×ó±ßÒ»ÁĞ
+		for(int y=topOffset;y<bottomOffset;y++){//å·¦è¾¹ä¸€åˆ—
 			//if()
 			img.fillBlock(leftOffset, y, 1, 1, this.rgbValue[index%this.colorTypeNum]);
 			/*switch(index % this.colorTypeNum ){
@@ -206,14 +206,14 @@ public class GenerateImage {
 		index=0;
 		
 		String temp = Integer.toBinaryString(frameIndex);		
-		for(int x=leftOffset+1;x<rightOffset;x++){//ÉÏÃæÒ»ĞĞ
+		for(int x=leftOffset+1;x<rightOffset;x++){//ä¸Šé¢ä¸€è¡Œ
 			if(index % 2 ==0)
 				img.fillWhiteBlock(x, topOffset, 1, 1);
 			else
 				img.fillBlackBlock(x, topOffset, 1, 1);
 			index++;
 		}
-		for(int x=leftOffset+1;x<leftOffset+11;x++){//ÉÏÃæÒ»ĞĞ			
+		for(int x=leftOffset+1;x<leftOffset+11;x++){//ä¸Šé¢ä¸€è¡Œ			
 				img.fillBlackBlock(x, topOffset, 1, 1);			
 		}
 		index=0;
@@ -223,7 +223,7 @@ public class GenerateImage {
 			index++;
 		}
 		index=0;
-		for(int x=leftOffset+1;x<rightOffset;x++){//ÏÂÃæÒ»ĞĞ
+		for(int x=leftOffset+1;x<rightOffset;x++){//ä¸‹é¢ä¸€è¡Œ
 			if(index % 2 ==0)
 				img.fillWhiteBlock(x, bottomOffset-1, 1, 1);
 			else
@@ -231,7 +231,7 @@ public class GenerateImage {
 			index++;
 		}
 		index=0;
-		for(int y=topOffset+1;y<bottomOffset;y++){//ÓÒ±ßÒ»ÁĞ
+		for(int y=topOffset+1;y<bottomOffset;y++){//å³è¾¹ä¸€åˆ—
 			if(index % 2 ==0)
 				img.fillWhiteBlock(rightOffset-1, y, 1, 1);
 			else
@@ -241,7 +241,7 @@ public class GenerateImage {
 	}
 	
 	/**
-	 * °ÑºÚÉ«±ß¿ò¼ÓÈë¶şÎ¬Âë
+	 * æŠŠé»‘è‰²è¾¹æ¡†åŠ å…¥äºŒç»´ç 
 	 */
 	public void addBlackBorder(Draw img){
 		int leftOffset = WhiteBorderLength;
@@ -254,7 +254,7 @@ public class GenerateImage {
 		img.fillBlackBlock(rightOffset-BlackBorderLenght, topOffset, BlackBorderLenght,contentHeight+2*mixBorderLength+2*BlackBorderLenght);
 	}
 	/**
-	 * °Ñ°×É«±ß¿ò¼ÓÈë¶şÎ¬Âë
+	 * æŠŠç™½è‰²è¾¹æ¡†åŠ å…¥äºŒç»´ç 
 	 * 
 	 * 
 	 */
