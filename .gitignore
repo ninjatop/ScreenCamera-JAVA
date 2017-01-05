@@ -13,7 +13,8 @@
 /colorsequence5/
 /colorsequence6/
 /colorsequence7/
-
+/.settings/
+/.classpath
+/.project
 /ScreenCamera-JAVA.iml
 /.idea/
-
