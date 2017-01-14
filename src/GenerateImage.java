@@ -237,7 +237,7 @@ public class GenerateImage {
 	}
 	public static void main(String []args){
 		GenerateImage generateImage = new GenerateImage();
-        List<byte[]> byteBuffer = generateImage.readFile("test.txt");
+        List<byte[]> byteBuffer = generateImage.readFile("book/test.txt");
         List<BitSet> bitSets = generateImage.RSEncode(byteBuffer);
         generateImage.toImg(bitSets);
 		//BitSet set = bitSets.get(0);
