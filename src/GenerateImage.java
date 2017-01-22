@@ -50,8 +50,8 @@ public class GenerateImage {
 	
 	protected int balck;
 	protected int white;
-	protected String imgPath ="img12/";
-	protected String textPath = "colorsequence12/";
+	protected String imgPath ="img13/";
+	protected String textPath = "colorsequence13/";
 	public GenerateImage(){
 		initRgbValue();
 		frameBitNum = contentHeight * contentWidth * bitsPerBlock * this.deltaNum / (this.deltaNum + 1);
@@ -64,13 +64,13 @@ public class GenerateImage {
 	public void initRgbValue(){
 		this.rgbValue = new int[this.deltaNum * 2 + 1];
 		this.rgbValue[0] = geneRGB(150,150,0);
-		this.rgbValue[1] = geneRGB(50, 255, 0);
-		this.rgbValue[2] = geneRGB(100, 255, 0);
-		this.rgbValue[3] = geneRGB(200, 255, 0);
+		this.rgbValue[1] = geneRGB(30, 255, 0);
+		this.rgbValue[2] = geneRGB(120, 255, 0);
+		this.rgbValue[3] = geneRGB(180, 255, 0);
 		this.rgbValue[4] = geneRGB(250, 255, 0);
-		this.rgbValue[5] = geneRGB(255, 50, 0);
-		this.rgbValue[6] = geneRGB(255, 100, 0);
-		this.rgbValue[7] = geneRGB(255, 200, 0);
+		this.rgbValue[5] = geneRGB(255, 30, 0);
+		this.rgbValue[6] = geneRGB(255, 120, 0);
+		this.rgbValue[7] = geneRGB(255, 180, 0);
 		this.rgbValue[8] = geneRGB(255, 250, 0);
 		
 	}
@@ -237,7 +237,7 @@ public class GenerateImage {
 	}
 	public static void main(String []args){
 		GenerateImage generateImage = new GenerateImage();
-        List<byte[]> byteBuffer = generateImage.readFile("book/test.txt");
+        List<byte[]> byteBuffer = generateImage.readFile("book/test1.txt");
         List<BitSet> bitSets = generateImage.RSEncode(byteBuffer);
         generateImage.toImg(bitSets);
 		//BitSet set = bitSets.get(0);
