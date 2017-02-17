@@ -34,14 +34,14 @@ public class GenerateImage {
 	protected int WhiteBorderLength = 15;//最外面白色边界
 	protected int BlackBorderLenght = 1;//第二层黑色边界
 	protected int mixBorderLength = 1;//调色板的边界
-	protected int contentWidth = 90;//内容长度
+	protected int contentWidth = 50;//内容长度
 	protected int contentHeight = 50;//内容高度
 	protected int blockSize = 8;//小方块大小
 	protected int colorTypeNum = 9;//颜色的块数
 	protected int deltaNum = 4;//变化的数目
     protected int bitsPerBlock = 2;//每个小方块的bit数目
 	protected int []rgbValue ;
-	protected double ecLevel = 0.2;//%20用来纠错
+	protected double ecLevel = 0.1;//%20用来纠错
     protected int ecNum ;//RS纠错中用于纠错的symbol个数，最后的个数
     protected int ecLength = 12;//一个symbol对应bit数目,应与RS的decoder参数保持一致
     protected int fileByteNum;//文件中byte大小
@@ -50,8 +50,8 @@ public class GenerateImage {
 	
 	protected int balck;
 	protected int white;
-	protected String imgPath ="img13/";
-	protected String textPath = "colorsequence13/";
+	protected String imgPath ="img14/";
+	protected String textPath = "colorsequence14/";
 	public GenerateImage(){
 		initRgbValue();
 		frameBitNum = contentHeight * contentWidth * bitsPerBlock * this.deltaNum / (this.deltaNum + 1);
@@ -237,7 +237,7 @@ public class GenerateImage {
 	}
 	public static void main(String []args){
 		GenerateImage generateImage = new GenerateImage();
-        List<byte[]> byteBuffer = generateImage.readFile("book/test1.txt");
+        List<byte[]> byteBuffer = generateImage.readFile("book/testSimple.txt");
         List<BitSet> bitSets = generateImage.RSEncode(byteBuffer);
         generateImage.toImg(bitSets);
 		//BitSet set = bitSets.get(0);
