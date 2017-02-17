@@ -34,7 +34,7 @@ public class GenerateImage {
 	protected int WhiteBorderLength = 15;//最外面白色边界
 	protected int BlackBorderLenght = 1;//第二层黑色边界
 	protected int mixBorderLength = 1;//调色板的边界
-	protected int contentWidth = 50;//内容长度
+	protected int contentWidth = 60;//内容长度
 	protected int contentHeight = 50;//内容高度
 	protected int blockSize = 8;//小方块大小
 	protected int colorTypeNum = 9;//颜色的块数
