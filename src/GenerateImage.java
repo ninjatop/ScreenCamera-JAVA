@@ -54,6 +54,7 @@ public class GenerateImage {
 	protected String textPath = "colorsequence14/";
 	public GenerateImage(){
 		initRgbValue();
+
 		frameBitNum = contentHeight * contentWidth * bitsPerBlock * this.deltaNum / (this.deltaNum + 1);
 		this.ecNum = calcEcNum(ecLevel);
 	}
