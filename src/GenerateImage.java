@@ -31,12 +31,13 @@ import java.util.List;
 
 */
 public class GenerateImage {
-	protected int WhiteBorderLength = 15;//最外面白色边界
+	protected int WhiteBorderWidth = 35;//最外面白色宽度宽度
+	protected int WhiteBorderHeight = 16;//最外面白色高度宽度
 	protected int BlackBorderLenght = 1;//第二层黑色边界
 	protected int mixBorderLength = 1;//调色板的边界
-	protected int contentWidth = 60;//内容长度
-	protected int contentHeight = 50;//内容高度
-	protected int blockSize = 8;//小方块大小
+	protected int contentWidth = 100;//内容长度
+	protected int contentHeight = 60;//内容高度
+	protected int blockSize = 10;//小方块大小
 	protected int colorTypeNum = 9;//颜色的块数
 	protected int deltaNum = 4;//变化的数目
     protected int bitsPerBlock = 2;//每个小方块的bit数目
@@ -50,8 +51,8 @@ public class GenerateImage {
 	
 	protected int balck;
 	protected int white;
-	protected String imgPath ="img14/";
-	protected String textPath = "colorsequence14/";
+	protected String imgPath ="img17/";
+	protected String textPath = "colorsequence17/";
 	public GenerateImage(){
 		initRgbValue();
 
@@ -64,15 +65,24 @@ public class GenerateImage {
 	
 	public void initRgbValue(){
 		this.rgbValue = new int[this.deltaNum * 2 + 1];
-		this.rgbValue[0] = geneRGB(150,150,0);
-		this.rgbValue[1] = geneRGB(30, 255, 0);
-		this.rgbValue[2] = geneRGB(120, 255, 0);
-		this.rgbValue[3] = geneRGB(180, 255, 0);
-		this.rgbValue[4] = geneRGB(250, 255, 0);
-		this.rgbValue[5] = geneRGB(255, 30, 0);
-		this.rgbValue[6] = geneRGB(255, 120, 0);
-		this.rgbValue[7] = geneRGB(255, 180, 0);
-		this.rgbValue[8] = geneRGB(255, 250, 0);
+/*		this.rgbValue[0] = geneRGB(150,100,0);
+		this.rgbValue[1] = geneRGB(60, 100, 0);
+		this.rgbValue[2] = geneRGB(100, 100, 0);
+		this.rgbValue[3] = geneRGB(140, 100, 0);
+		this.rgbValue[4] = geneRGB(180, 100, 0);
+		this.rgbValue[5] = geneRGB(150, 70, 0);
+		this.rgbValue[6] = geneRGB(150, 90, 0);
+		this.rgbValue[7] = geneRGB(150, 110, 0);
+		this.rgbValue[8] = geneRGB(150, 130, 0);*/
+		this.rgbValue[0] = geneRGB(0,0,0);
+		this.rgbValue[1] = geneRGB(50, 0, 0);
+		this.rgbValue[2] = geneRGB(100, 0, 0);
+		this.rgbValue[3] = geneRGB(140, 0, 0);
+		this.rgbValue[4] = geneRGB(200, 0, 0);
+		this.rgbValue[5] = geneRGB(0, 40, 0);
+		this.rgbValue[6] = geneRGB(0, 90, 0);
+		this.rgbValue[7] = geneRGB(0, 140, 0);
+		this.rgbValue[8] = geneRGB(0, 190, 0);
 		
 	}
 
@@ -221,8 +231,8 @@ public class GenerateImage {
         int frameIndex = 0;
         //String head = genHead(fileByteNum);
 		for(BitSet bitset :bitSets){
-			int imageWidthLenght=WhiteBorderLength*2+BlackBorderLenght*2+mixBorderLength*2+contentWidth;
-			int imageHeightLenght=WhiteBorderLength*2+BlackBorderLenght*2+mixBorderLength*2+contentHeight;
+			int imageWidthLenght=WhiteBorderWidth*2+BlackBorderLenght*2+mixBorderLength*2+contentWidth;
+			int imageHeightLenght=WhiteBorderHeight*2+BlackBorderLenght*2+mixBorderLength*2+contentHeight;
 			Draw img = new Draw(imageWidthLenght,imageHeightLenght,blockSize);
 			addWhiteBorder(img);
 			addBlackBorder(img);
@@ -294,8 +304,8 @@ public class GenerateImage {
      */
     private void addHead(Draw img, String head) {
 
-        int headTopOffset = WhiteBorderLength + BlackBorderLenght ;
-        int headLeftOffset = WhiteBorderLength + BlackBorderLenght + mixBorderLength;
+        int headTopOffset = WhiteBorderHeight + BlackBorderLenght ;
+        int headLeftOffset = WhiteBorderWidth + BlackBorderLenght + mixBorderLength;
         int headRightOffset = headLeftOffset + contentWidth ;
         if(head.length()>headRightOffset-headLeftOffset){
             System.out.println("Warning: head exceed barcode");
@@ -319,8 +329,8 @@ public class GenerateImage {
 	 */
 	public void addContent(Draw img, BitSet bitset, int frameIndex) {
 	    int a = bitset.size();
-		int contentLeftOffset = WhiteBorderLength+BlackBorderLenght+mixBorderLength;
-		int contentTopOffset = WhiteBorderLength+BlackBorderLenght+mixBorderLength;
+		int contentLeftOffset = WhiteBorderWidth+BlackBorderLenght+mixBorderLength;
+		int contentTopOffset = WhiteBorderHeight+BlackBorderLenght+mixBorderLength;
 		int contentRightOffset = contentLeftOffset + contentWidth;
 		int contentBottomOffset = contentTopOffset + contentHeight;
 
@@ -398,8 +408,8 @@ public class GenerateImage {
 
 	}
 	public void addFrameIndex(Draw img, int frameIndex){
-		int topOffset = WhiteBorderLength + BlackBorderLenght + mixBorderLength;
-		int x = WhiteBorderLength +BlackBorderLenght +mixBorderLength + contentWidth;
+		int topOffset = WhiteBorderHeight + BlackBorderLenght + mixBorderLength;
+		int x = WhiteBorderWidth +BlackBorderLenght +mixBorderLength + contentWidth;
 		int bottomOffset = topOffset + contentWidth + mixBorderLength;
 		String strFrameIndex = genHead(frameIndex);
 		if(strFrameIndex.length() > bottomOffset - topOffset){
@@ -422,8 +432,8 @@ public class GenerateImage {
 	 * 
 	 */
 	public void addColorBorder(Draw img, int frameIndex){
-		int leftOffset = WhiteBorderLength+BlackBorderLenght;
-		int topOffset = WhiteBorderLength+BlackBorderLenght;
+		int leftOffset = WhiteBorderWidth+BlackBorderLenght;
+		int topOffset = WhiteBorderHeight+BlackBorderLenght;
 		int rightOffset = leftOffset + contentWidth + 2* mixBorderLength;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength;
 		int index=0;
@@ -471,8 +481,8 @@ public class GenerateImage {
 	 * 把黑色边框加入二维码
 	 */
 	public void addBlackBorder(Draw img){
-		int leftOffset = WhiteBorderLength;
-		int topOffset = WhiteBorderLength;
+		int leftOffset = WhiteBorderWidth;
+		int topOffset = WhiteBorderHeight;
 		int rightOffset = leftOffset + contentWidth + 2*mixBorderLength + 2*BlackBorderLenght;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength + 2*BlackBorderLenght;
 		img.fillBlackBlock(leftOffset, topOffset, contentWidth+2*mixBorderLength+2*BlackBorderLenght, BlackBorderLenght);	
@@ -488,12 +498,12 @@ public class GenerateImage {
 	public void addWhiteBorder(Draw img){
 		int leftOffset = 0;
 		int topOffset = 0;
-		int rightOffset = contentWidth + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderLength;
-		int bottomOffset = contentHeight + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderLength;
-		img.fillWhiteBlock(leftOffset, topOffset, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderLength, WhiteBorderLength);	
-		img.fillWhiteBlock(leftOffset, bottomOffset-WhiteBorderLength, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderLength, WhiteBorderLength);
-		img.fillWhiteBlock(leftOffset, topOffset, WhiteBorderLength, contentHeight+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderLength);	
-		img.fillWhiteBlock(rightOffset-WhiteBorderLength, topOffset, WhiteBorderLength,contentHeight+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderLength);
+		int rightOffset = contentWidth + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderWidth;
+		int bottomOffset = contentHeight + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderHeight;
+		img.fillWhiteBlock(leftOffset, topOffset, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2 * WhiteBorderWidth, WhiteBorderHeight);//上面
+		img.fillWhiteBlock(leftOffset, bottomOffset - WhiteBorderHeight, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderWidth, WhiteBorderHeight);//下面
+		img.fillWhiteBlock(leftOffset, topOffset, WhiteBorderWidth, contentHeight +2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderHeight);	//左边
+		img.fillWhiteBlock(rightOffset - WhiteBorderWidth, topOffset, WhiteBorderWidth,contentHeight+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderHeight);//右边
 		
 	}
     /**

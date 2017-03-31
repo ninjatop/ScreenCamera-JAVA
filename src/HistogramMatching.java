@@ -12,13 +12,13 @@ import java.text.DecimalFormat;
 public class HistogramMatching {
     public static void main(String [] args){
         try {
-            BufferedImage srcImg = ImageIO.read(new File("histogram/1.jpg"));
-            BufferedImage matchingImg = ImageIO.read(new File("histogram/2.png"));
+            BufferedImage srcImg = ImageIO.read(new File("histogram/111.jpg"));
+            BufferedImage matchingImg = ImageIO.read(new File("histogram/112.png"));
             BufferedImage dstImg = new BufferedImage(srcImg.getWidth(), srcImg.getHeight(), srcImg.getType());
             dstImg.setData(srcImg.getData());
             HistogramMatching histogram = new HistogramMatching();
             if(histogram.HistogramMatching(srcImg, matchingImg, dstImg)){
-                ImageIO.write(dstImg, "jpg", new File("histogram/4.jpg"));
+                ImageIO.write(dstImg, "jpg", new File("histogram/114.jpg"));
             }
             else{
                 System.out.println("匹配失败");
@@ -41,7 +41,7 @@ public class HistogramMatching {
         BufferedImage tempSrcBmp = new BufferedImage(srcImg.getWidth(), srcImg.getHeight(), srcImg.getType());
         tempSrcBmp.setData(srcImg.getData());
         BufferedImage tempMatchingBmp = new BufferedImage(matchingImg.getWidth(), matchingImg.getHeight(), matchingImg.getType());
-        tempMatchingBmp.setData(srcImg.getData());
+        tempMatchingBmp.setData(matchingImg.getData());
         double[] srcCpR = new double[256];
         double[] srcCpG = new double[256];
         double[] srcCpB = new double[256];
@@ -83,6 +83,18 @@ public class HistogramMatching {
             }
             mapPixelR[i] = kR;
         }
+/*        for(int i = 0; i <256; i++){
+            diffBR = 1;
+            kR = 0;
+            for(int j = 0; j <256; j++){
+                diffAR = Math.abs(srcCpR[i] - matchCpR[j]);
+                if(diffAR <= diffBR){
+                    kR = (short)j;
+                    diffBR = diffAR;
+                }
+            }
+            mapPixelR[i] = kR;
+        }*/
         //G
         for (int i = 0; i < 256; i++) {
             diffBG = 1;
@@ -105,6 +117,18 @@ public class HistogramMatching {
             }
             mapPixelG[i] = kG;
         }
+       /* for(int i = 0; i <256; i++){
+            diffBG = 1;
+            kG = 0;
+            for(int j = 0; j <256; j++){
+                diffAG = Math.abs(srcCpG[i] - matchCpG[j]);
+                if(diffAG <= diffBG){
+                    kG = (short)j;
+                    diffBG = diffAG;
+                }
+            }
+            mapPixelG[i] = kG;
+        }*/
         //B
         for (int i = 0; i < 256; i++) {
             diffBB = 1;
@@ -127,12 +151,25 @@ public class HistogramMatching {
             }
             mapPixelB[i] = kB;
         }
+        /*for(int i = 0; i <256; i++){
+            diffBB = 1;
+            kB = 0;
+            for(int j = 0; j <256; j++){
+                diffAB = Math.abs(srcCpB[i] - matchCpB[j]);
+                if(diffAB <= diffBB){
+                    kB = (short)j;
+                    diffBB = diffAB;
+                }
+            }
+            mapPixelB[i] = kB;
+        }*/
         //映射变换
 
         for (int i = 0; i < dstImg.getHeight(); i++) {
             for (int j = 0; j < dstImg.getWidth(); j++) {
                 int []oldRGB = getRGB(dstImg.getRGB(j ,i));
-                int rgb = geneRGB(mapPixelR[oldRGB[0]], oldRGB[1], oldRGB[2]);
+                int []newRGB = new int[]{mapPixelR[oldRGB[0]], oldRGB[1], oldRGB[2]};
+                int rgb = geneRGB(newRGB[0],newRGB[1],newRGB[2]);
                 dstImg.setRGB(j, i, rgb);
             }
         }
