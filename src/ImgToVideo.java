@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ImgToVideo {
     public static void main(String[] args){
         //runFFMpeg("/Users/zhantong/Desktop/test1",5,"/Users/zhantong/Downloads/SnowLeopard_Lion_Mountain_Lion_Mavericks_Yosemite_El-Captain_02.02.2016/ffmpeg");
-        String imgDir = "C:\\Users\\CHEN\\IdeaProjects\\ScreenCamera-JAVA\\img17\\";
+        String imgDir = "C:\\Users\\CHEN\\IdeaProjects\\ScreenCamera-JAVA\\img41\\";
     	runFFMpeg(imgDir, 10);
     	//String command = "cmd.exe /c ffmpeg -framerate 30 -i C:\\Users\\CHEN\\workspace\\ScreenCamera\\img\\%06d.png -c:v libx264 -r 30 -pix_fmt yuv420p C:\\Users\\CHEN\\workspace\\ScreenCamera\\img\\out_framerate.mp4";
 

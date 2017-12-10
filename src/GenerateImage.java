@@ -31,18 +31,21 @@ import java.util.List;
 
 */
 public class GenerateImage {
-	protected int WhiteBorderWidth = 35;//最外面白色宽度宽度
-	protected int WhiteBorderHeight = 16;//最外面白色高度宽度
+	protected int WhiteBorderWidth = 30  ;//最外面白色宽度宽度
+	protected int WhiteBorderHeight = 12;//最外面白色高度宽度
 	protected int BlackBorderLenght = 1;//第二层黑色边界
-	protected int mixBorderLength = 1;//调色板的边界
-	protected int contentWidth = 100;//内容长度
-	protected int contentHeight = 60;//内容高度
+	protected int mixBorderLength = 1;//上下右边的mixborder
+	protected int contentWidth = 60  ;//内容长度
+	protected int contentHeight = 50 ;//内容高度
+	//protected int refeHeight = 6;
 	protected int blockSize = 10;//小方块大小
-	protected int colorTypeNum = 9;//颜色的块数
+
 	protected int deltaNum = 4;//变化的数目
+	//protected int mixBorderLeft = deltaNum;//调色板的宽度和变化的颜色大小相等
+
     protected int bitsPerBlock = 2;//每个小方块的bit数目
 	protected int []rgbValue ;
-	protected double ecLevel = 0.1;//%20用来纠错
+	protected double ecLevel = 0.2;//%20用来纠错
     protected int ecNum ;//RS纠错中用于纠错的symbol个数，最后的个数
     protected int ecLength = 12;//一个symbol对应bit数目,应与RS的decoder参数保持一致
     protected int fileByteNum;//文件中byte大小
@@ -51,12 +54,11 @@ public class GenerateImage {
 	
 	protected int balck;
 	protected int white;
-	protected String imgPath ="img17/";
-	protected String textPath = "colorsequence17/";
+	protected String imgPath ="img41/";
+	protected String textPath = "colorsequence41/";
 	public GenerateImage(){
 		initRgbValue();
-
-		frameBitNum = contentHeight * contentWidth * bitsPerBlock * this.deltaNum / (this.deltaNum + 1);
+		frameBitNum = contentHeight * contentWidth * bitsPerBlock ;
 		this.ecNum = calcEcNum(ecLevel);
 	}
 	/**
@@ -64,8 +66,8 @@ public class GenerateImage {
 	 */
 	
 	public void initRgbValue(){
-		this.rgbValue = new int[this.deltaNum * 2 + 1];
-/*		this.rgbValue[0] = geneRGB(150,100,0);
+		this.rgbValue = new int[this.deltaNum];
+		/*this.rgbValue[0] = geneRGB(150,100,0);
 		this.rgbValue[1] = geneRGB(60, 100, 0);
 		this.rgbValue[2] = geneRGB(100, 100, 0);
 		this.rgbValue[3] = geneRGB(140, 100, 0);
@@ -74,16 +76,55 @@ public class GenerateImage {
 		this.rgbValue[6] = geneRGB(150, 90, 0);
 		this.rgbValue[7] = geneRGB(150, 110, 0);
 		this.rgbValue[8] = geneRGB(150, 130, 0);*/
-		this.rgbValue[0] = geneRGB(0,0,0);
-		this.rgbValue[1] = geneRGB(50, 0, 0);
-		this.rgbValue[2] = geneRGB(100, 0, 0);
-		this.rgbValue[3] = geneRGB(140, 0, 0);
-		this.rgbValue[4] = geneRGB(200, 0, 0);
-		this.rgbValue[5] = geneRGB(0, 40, 0);
-		this.rgbValue[6] = geneRGB(0, 90, 0);
-		this.rgbValue[7] = geneRGB(0, 140, 0);
-		this.rgbValue[8] = geneRGB(0, 190, 0);
+
+		this.rgbValue[0] = geneRGB(YUV2RGB(new int[]{100, 100, 100}));
+		this.rgbValue[1] = geneRGB(YUV2RGB(new int[]{100, 100, 200}));
+		this.rgbValue[2] = geneRGB(YUV2RGB(new int[]{100, 180, 100}));
+		this.rgbValue[3] = geneRGB(YUV2RGB(new int[]{100, 180, 200}));
+
+
+
+/*		this.rgbValue[0] = geneRGB(YUV2RGB(new int[]{100, 120, 100}));
+		this.rgbValue[1] = geneRGB(YUV2RGB(new int[]{100, 140, 100}));
+		this.rgbValue[2] = geneRGB(YUV2RGB(new int[]{100, 160, 100}));
+		this.rgbValue[3] = geneRGB(YUV2RGB(new int[]{100, 180, 100}));
+		this.rgbValue[4] = geneRGB(YUV2RGB(new int[]{100, 100, 120}));
+		this.rgbValue[5] = geneRGB(YUV2RGB(new int[]{100, 100, 140}));
+		this.rgbValue[6] = geneRGB(YUV2RGB(new int[]{100, 100, 160}));
+		this.rgbValue[7] = geneRGB(YUV2RGB(new int[]{100, 100, 180}));*/
+
+
+
+
+
+
+
 		
+	}
+	public int[]RGB2YUV(int []rgb){
+		int r = rgb[0];
+		int g = rgb[1];
+		int b = rgb[2];
+		int y = (int)(0.257 * r + 0.504 * g + 0.098 * b + 16);
+		int u = (int)(-0.148 * r - 0.291 * g + 0.439 * b + 128);
+		int v = (int)(0.439 * r - 0.368 * g - 0.071 * b + 128);
+		return new int[]{y, u ,v};
+	}
+
+	/**
+	 * 这里是已经经过修正的 即 y+16 ,UV + 128
+	 * @param yuv
+	 * @return
+	 */
+	public int []YUV2RGB(int []yuv){
+		int y = yuv[0];
+		int u = yuv[1];
+		int v = yuv[2];
+		int r = (int) (1.164 * (y - 16) + 1.596 * (v - 128));
+		int g = (int) (1.164 * (y - 16) - 0.813 * (v - 128) - 0.392 * (u - 128) );
+		int b = (int) (1.164 * (y - 16) + 2.017 * (u - 128));
+		System.out.println(r+"\t"+g+"\t"+b+"\t"+yuv[0]+"\t"+yuv[1] + "\t"+yuv[2]);
+		return new int[]{r, g, b};
 	}
 
 	
@@ -116,7 +157,7 @@ public class GenerateImage {
         //一个二维码实际存储的文件信息,最后的8byte为RaptorQ头部
         final int realByteLength = frameBitNum / 8 - ecNum * ecLength / 8 - 8;
         final int NUMBER_OF_SOURCE_BLOCKS=1;
-        final double REPAIR_PERCENT=2;
+        final double REPAIR_PERCENT = 1.5;
         List<byte[]> buffer = new LinkedList<>();
         Path path = Paths.get(filePath);
         byte[] byteData = null;
@@ -230,9 +271,10 @@ public class GenerateImage {
         checkDirectory(textPath);
         int frameIndex = 0;
         //String head = genHead(fileByteNum);
+		//addtestcontent();
 		for(BitSet bitset :bitSets){
-			int imageWidthLenght=WhiteBorderWidth*2+BlackBorderLenght*2+mixBorderLength*2+contentWidth;
-			int imageHeightLenght=WhiteBorderHeight*2+BlackBorderLenght*2+mixBorderLength*2+contentHeight;
+			int imageWidthLenght=WhiteBorderWidth*2+BlackBorderLenght*2+ 2 * mixBorderLength + contentWidth;
+			int imageHeightLenght=WhiteBorderHeight*2+BlackBorderLenght*2 + mixBorderLength*2+contentHeight;
 			Draw img = new Draw(imageWidthLenght,imageHeightLenght,blockSize);
 			addWhiteBorder(img);
 			addBlackBorder(img);
@@ -244,18 +286,16 @@ public class GenerateImage {
 			DecimalFormat df=new DecimalFormat("000000");
 			img.save(imgPath,df.format(frameIndex)+".png", "png");
 			frameIndex ++;
+
+
 		}
 	}
 	public static void main(String []args){
 		GenerateImage generateImage = new GenerateImage();
-        List<byte[]> byteBuffer = generateImage.readFile("book/testSimple.txt");
+        List<byte[]> byteBuffer = generateImage.readFile("book/test1.txt");
         List<BitSet> bitSets = generateImage.RSEncode(byteBuffer);
         generateImage.toImg(bitSets);
-		//BitSet set = bitSets.get(0);
-		/*byte [] out = generateImage.solve(bitSets);
-		String result = new String(out);
-		System.out.print(result);
-		int a = 2;*/
+
 
 		
 		
@@ -320,6 +360,52 @@ public class GenerateImage {
         }
 
     }
+    public void addtestcontent(){
+		checkDirectory(imgPath);
+		checkDirectory(textPath);
+
+		int imageWidthLenght=WhiteBorderWidth*2+BlackBorderLenght*2+mixBorderLength * 2 +contentWidth;
+		int imageHeightLenght=WhiteBorderHeight*2+BlackBorderLenght*2+mixBorderLength*2+contentHeight;
+		Draw img = new Draw(imageWidthLenght,imageHeightLenght,blockSize);
+		addWhiteBorder(img);
+		addBlackBorder(img);
+		addColorBorder(img, 0);
+		String head = genHead(fileByteNum);
+		addHead(img,head);
+		addFrameIndex(img,0);
+
+
+
+
+
+
+		int contentLeftOffset = WhiteBorderWidth+BlackBorderLenght+mixBorderLength;
+		int contentTopOffset = WhiteBorderHeight+BlackBorderLenght+mixBorderLength;
+		int contentRightOffset = contentLeftOffset + contentWidth;
+		int contentBottomOffset = contentTopOffset + contentHeight;
+
+
+		int count = 0;
+
+
+		for(int x = contentTopOffset; x < contentBottomOffset; x++) {
+			for (int y = contentLeftOffset; y < contentRightOffset; y++) {
+				int index = 0;
+				img.fillBlock(y, x, 1, 1, geneRGB(YUV2RGB(new int[]{100,100 + count * 10 % 110 , 100})));
+
+			}
+			count += 1;
+
+		}
+
+		img.save(imgPath,"test.png","png");
+
+
+
+
+
+
+	}
 	/**
 	 * 将内容加到二维码中
 	 * 
@@ -336,75 +422,31 @@ public class GenerateImage {
 
 
 		int count = 0;
-		switch(frameIndex % 2){
-			case 0:{//偶数页，对R通道修改
-				StringBuffer str = new StringBuffer();
-				for(int x = contentTopOffset; x < contentBottomOffset; x = x + this.deltaNum + 1){
-					for(int y = contentLeftOffset; y < contentRightOffset; y = y + this.deltaNum + 1){
-						for(int i = 0 ;i < this.deltaNum + 1;i ++){
-							img.fillBlock(y+i, x, 1, 1,this.rgbValue[i]);
-						}
-
-						for(int i = 1; i < this.deltaNum + 1; i++){
-							for(int j = 0; j < this.deltaNum + 1; j++){
-								int index = 0;
-								for(int k=0;k < bitsPerBlock;k++){
-									index = (index << 1) + (bitset.get(count + k) ? 1 : 0);
-								}
-								img.fillBlock(y+j, x+i, 1, 1, this.rgbValue[ index + 1]);
-								str.append(index +",");
-								 count += this.bitsPerBlock;
-							}
-						}											
-					}
-					str.append("\n");
+		StringBuffer str = new StringBuffer();
+		for(int x = contentTopOffset; x < contentBottomOffset; x++) {
+			for (int y = contentLeftOffset; y < contentRightOffset; y++) {
+				int index = 0;
+				for (int k = 0; k < bitsPerBlock; k++) {
+					index = (index << 1) + (bitset.get(count + k) ? 1 : 0);
 				}
-				try {
-					FileWriter writer = new FileWriter( new File(textPath+frameIndex+".txt"),true);
-					writer.write(str.toString());
-					writer.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
+				img.fillBlock(y, x, 1, 1, this.rgbValue[index]);
+				str.append(index + ",");
+				count += bitsPerBlock;
 			}
-			case 1:{
-				StringBuffer str = new StringBuffer();
-				for(int x = contentTopOffset; x < contentBottomOffset; x = x + this.deltaNum + 1){
-					for(int y = contentLeftOffset; y < contentRightOffset; y = y + this.deltaNum + 1){
-						img.fillBlock(y, x, 1, 1,this.rgbValue[0] );
-						for(int i = 1 ;i < this.deltaNum + 1;i++){
-							img.fillBlock(y+i, x, 1, 1,this.rgbValue[i+this.deltaNum] );
-						}
-
-						for(int i = 1; i < this.deltaNum + 1; i++){
-							for(int j = 0; j < this.deltaNum + 1; j++){
-								int index = 0;
-								for(int k=0;k < bitsPerBlock;k++){
-									index = (index<<1) + (bitset.get(count + k) ? 1 : 0);
-								}
-								index += this.deltaNum;
-								img.fillBlock(y+j, x+i, 1, 1, this.rgbValue[index + 1]);
-								str.append(index +",");
-								count += this.bitsPerBlock;
-							}
-						}
-					}
-					str.append("\n");
-				}
-				try {
-					FileWriter writer = new FileWriter( new File(textPath+frameIndex+".txt"),true);
-					writer.write(str.toString());
-					writer.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-			}
-			
+			str.append(" \n");
 		}
+		try {
+			FileWriter writer = new FileWriter( new File(textPath+frameIndex+".txt"),true);
+			writer.write(str.toString());
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+			
+
 
 	}
 	public void addFrameIndex(Draw img, int frameIndex){
@@ -436,14 +478,14 @@ public class GenerateImage {
 		int topOffset = WhiteBorderHeight+BlackBorderLenght;
 		int rightOffset = leftOffset + contentWidth + 2* mixBorderLength;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength;
-		int index=0;
-		for(int y=topOffset;y<bottomOffset;y++){//左边一列
-			img.fillBlock(leftOffset, y, 1, 1, this.rgbValue[index%this.colorTypeNum]);
-			index++;			
+		int count = 0;
+		for(int y=topOffset;y<bottomOffset;y++){//左边deltaNum列
+			img.fillBlock(leftOffset, y, 1, 1, this.rgbValue[count %this.deltaNum]);
+			count ++;
 		}
-		index=0;
+		int index=0;
 		String temp = Integer.toBinaryString(frameIndex);		
-		for(int x=leftOffset+1;x<rightOffset;x++){//上面一行
+		for(int x=leftOffset + this.mixBorderLength;x<rightOffset;x++){//上面一行
 			if(index % 2 ==0)
 				img.fillWhiteBlock(x, topOffset, 1, 1);
 			else
@@ -460,13 +502,13 @@ public class GenerateImage {
 			index++;
 		}
 		index=0;
-		for(int x=leftOffset+1;x<rightOffset;x++){//下面一行
+		/*for(int x=leftOffset + this.mixBorderLength;x<rightOffset;x++){//下面一行
 			if(index % 2 ==0)
 				img.fillWhiteBlock(x, bottomOffset-1, 1, 1);
 			else
 				img.fillBlackBlock(x, bottomOffset-1, 1, 1);
 			index++;
-		}
+		}*/
 
 		/*for(int y=topOffset+1;y<bottomOffset;y++){//右边一列
 			if(index % 2 ==0)
@@ -483,7 +525,7 @@ public class GenerateImage {
 	public void addBlackBorder(Draw img){
 		int leftOffset = WhiteBorderWidth;
 		int topOffset = WhiteBorderHeight;
-		int rightOffset = leftOffset + contentWidth + 2*mixBorderLength + 2*BlackBorderLenght;
+		int rightOffset = leftOffset + contentWidth + mixBorderLength + mixBorderLength + 2*BlackBorderLenght;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength + 2*BlackBorderLenght;
 		img.fillBlackBlock(leftOffset, topOffset, contentWidth+2*mixBorderLength+2*BlackBorderLenght, BlackBorderLenght);	
 		img.fillBlackBlock(leftOffset, bottomOffset-BlackBorderLenght, contentWidth+2*mixBorderLength+2*BlackBorderLenght, BlackBorderLenght);
@@ -498,7 +540,7 @@ public class GenerateImage {
 	public void addWhiteBorder(Draw img){
 		int leftOffset = 0;
 		int topOffset = 0;
-		int rightOffset = contentWidth + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderWidth;
+		int rightOffset = contentWidth + mixBorderLength + mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderWidth;
 		int bottomOffset = contentHeight + 2*mixBorderLength + 2*BlackBorderLenght + 2*WhiteBorderHeight;
 		img.fillWhiteBlock(leftOffset, topOffset, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2 * WhiteBorderWidth, WhiteBorderHeight);//上面
 		img.fillWhiteBlock(leftOffset, bottomOffset - WhiteBorderHeight, contentWidth+2*mixBorderLength+2*BlackBorderLenght+2*WhiteBorderWidth, WhiteBorderHeight);//下面
