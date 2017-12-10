@@ -475,7 +475,7 @@ public class GenerateImage {
 	 */
 	public void addColorBorder(Draw img, int frameIndex){
 		int leftOffset = WhiteBorderWidth+BlackBorderLenght;
-		int topOffset = WhiteBorderHeight+BlackBorderLenght;
+		int topOffset = WhiteBorderHeight+BlackBorderLenght+mixBorderLength;
 		int rightOffset = leftOffset + contentWidth + 2* mixBorderLength;
 		int bottomOffset = topOffset + contentHeight + 2*mixBorderLength;
 		int count = 0;
