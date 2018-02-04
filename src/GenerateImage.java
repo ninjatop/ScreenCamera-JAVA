@@ -31,12 +31,12 @@ import java.util.List;
 
 */
 public class GenerateImage {
-	protected int WhiteBorderWidth = 30  ;//最外面白色宽度宽度
+	protected int WhiteBorderWidth = 12  ;//最外面白色宽度宽度
 	protected int WhiteBorderHeight = 12;//最外面白色高度宽度
 	protected int BlackBorderLenght = 1;//第二层黑色边界
 	protected int mixBorderLength = 1;//上下右边的mixborder
-	protected int contentWidth = 60  ;//内容长度
-	protected int contentHeight = 50 ;//内容高度
+	protected int contentWidth = 120  ;//内容长度
+	protected int contentHeight = 70 ;//内容高度
 	//protected int refeHeight = 6;
 	protected int blockSize = 10;//小方块大小
 
@@ -45,7 +45,7 @@ public class GenerateImage {
 
     protected int bitsPerBlock = 2;//每个小方块的bit数目
 	protected int []rgbValue ;
-	protected double ecLevel = 0.2;//%20用来纠错
+	protected double ecLevel = 0.1;//%20用来纠错
     protected int ecNum ;//RS纠错中用于纠错的symbol个数，最后的个数
     protected int ecLength = 12;//一个symbol对应bit数目,应与RS的decoder参数保持一致
     protected int fileByteNum;//文件中byte大小
@@ -54,8 +54,8 @@ public class GenerateImage {
 	
 	protected int balck;
 	protected int white;
-	protected String imgPath ="img41/";
-	protected String textPath = "colorsequence41/";
+	protected String imgPath ="img47/";
+	protected String textPath = "colorsequence47/";
 	public GenerateImage(){
 		initRgbValue();
 		frameBitNum = contentHeight * contentWidth * bitsPerBlock ;
@@ -292,7 +292,7 @@ public class GenerateImage {
 	}
 	public static void main(String []args){
 		GenerateImage generateImage = new GenerateImage();
-        List<byte[]> byteBuffer = generateImage.readFile("book/test1.txt");
+        List<byte[]> byteBuffer = generateImage.readFile("book/test.txt");
         List<BitSet> bitSets = generateImage.RSEncode(byteBuffer);
         generateImage.toImg(bitSets);
 
@@ -549,19 +549,19 @@ public class GenerateImage {
 		
 	}
     /**
-     * 生成头信息,即32位的int内容+8位CRC8校验码
+     * 生成头信息,即20位的int内容+8位CRC8校验码
      *
      * @param x 内容
-     * @return 32位的int内容+8位CRC8校验码
+     * @return 20位的int内容+8位CRC8校验码
      */
     private String genHead(int x) {
-        String pad32 = String.format("%032d", 0);
+        String pad20 = String.format("%020d", 0);
         String Pad8 = String.format("%08d", 0);
         CRC8 crc = new CRC8();
         crc.update(x);
         String c = Integer.toBinaryString((int) crc.getValue());
         String s = Integer.toBinaryString(x);
-        return pad32.substring(s.length()) + s + Pad8.substring(c.length()) + c;
+        return pad20.substring(s.length()) + s + Pad8.substring(c.length()) + c;
     }
 
 	public int getIndex(boolean a, boolean b, int frameIndex ) {
